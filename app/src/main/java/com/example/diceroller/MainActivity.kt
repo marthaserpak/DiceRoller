@@ -3,7 +3,7 @@ package com.example.diceroller
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
+import android.widget.ImageView
 
 /**
  * This activity allows the user to roll a dice and view the result
@@ -14,9 +14,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val dice_btn = findViewById<Button>(R.id.button)
-        dice_btn.setOnClickListener { rollDice() }
-
+        val diceBtn = findViewById<Button>(R.id.button)
+        diceBtn.setOnClickListener { rollDice() }
     }
 
     /**
@@ -24,19 +23,27 @@ class MainActivity : AppCompatActivity() {
      */
     private fun rollDice() {
         // Create object instance and roll our dice
-        val dice = Dice(20)
-        val rollDice = dice.roll()
+        val dice = Dice(6)
+        val diceRoll = dice.roll()
 
-        // Set the result on the screen
-        val rollResult = findViewById<TextView>(R.id.dice1)
-        rollResult.text = rollDice.toString()
+        // Find the ImageView in the layout
+        val diceImage = findViewById<ImageView>(R.id.imageView)
 
+        // Determine which drawable resource ID to use based on the dice roll
+        val drawableResource = when(diceRoll) {
+            1 -> R.drawable.dice_1
+            2 -> R.drawable.dice_2
+            3 -> R.drawable.dice_3
+            4 -> R.drawable.dice_4
+            5 -> R.drawable.dice_5
+            else -> R.drawable.dice_6
+        }
 
-        val dice2 = Dice(6)
-        val rollDiceSec = dice2.roll()
+        // Update the ImageView with the correct drawable resource ID
+        diceImage.setImageResource(drawableResource)
 
-        val rollResult2 = findViewById<TextView>(R.id.dice2)
-        rollResult2.text = rollDiceSec.toString()
+        // Update the content description
+        diceImage.contentDescription = diceRoll.toString()
     }
 }
 
